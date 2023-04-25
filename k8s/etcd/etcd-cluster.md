@@ -73,11 +73,11 @@ ExecStart=/usr/bin/etcd \
 --peer-client-cert-auth \
 --client-cert-auth \
 --listen-peer-urls=https://172.17.1.231:2380 \
---initial-advertise-peer-urls=https://172.17.1.231:2380 \
---listen-client-urls=https://172.17.1.231:2379,http://127.0.0.1:2379 \
---advertise-client-urls=https://172.17.1.231:2379 \
+--initial-advertise-peer-urls=https://172.17.10.230:2380 \
+--listen-client-urls=https://172.17.10.230:2379,http://127.0.0.1:2379 \
+--advertise-client-urls=https://172.17.10.230:2379 \
 --initial-cluster-token=etcd-cluster-0 \
---initial-cluster="etcd0=https://172.17.1.231:2380,etcd1=https://172.17.1.168:2380,etcd2=https://172.17.1.17:2380" \
+--initial-cluster="etcd0=https://172.17.10.230:2380,etcd1=https://172.17.10.160:2380,etcd2=https://172.17.10.100:2380" \
 --initial-cluster-state=new \
 --max-request-bytes=33554432 \
 --quota-backend-bytes=6442450944 \
@@ -98,9 +98,9 @@ ETCDCTL_API=3  etcdctl --cacert=/etc/ssl/etcd/ca.pem --cert=/etc/ssl/etcd/cert.p
 
 有tls验证example
 ```ETCDCTL_API=3 etcdctl \
---endpoints=https://172.17.1.231:2379 \
---endpoints=https://172.17.1.168:2379 \
---endpoints=https://172.17.1.17:2379 \
+--endpoints=https://172.10.1.230:2379 \
+--endpoints=https://172.10.1.160:2379 \
+--endpoints=https://172.17.10.56:2379 \
 --cacert=/etc/etcd/ssl/ca.pem \
 --cert=/etc/etcd/ssl/etcd.pem \
 --key=/etc/etcd/ssl/etcd-key.pem  \
