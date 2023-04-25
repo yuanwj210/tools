@@ -5,12 +5,12 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -v /data/etcd:/var/l
  --name etcd quay.io/coreos/etcd:v3.5.4  \
  /usr/local/bin/etcd  \
  -name etcd0 \
- -advertise-client-urls http://172.31.19.4:2379,http://172.31.19.4:4001 \
+ -advertise-client-urls http://172.30.123.4:2379,http://172.30.123.4:4001 \
  -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
- -initial-advertise-peer-urls http://172.31.19.4:2380 \
+ -initial-advertise-peer-urls http://172.30.123.4:2380 \
  -listen-peer-urls http://0.0.0.0:2380 \
  -initial-cluster-token etcd-cluster-1 \
- -initial-cluster etcd0=http://172.31.19.4:2380 \
+ -initial-cluster etcd0=http://172.30.123.4:2380 \
  -initial-cluster-state new
  ```
 ### 备份
