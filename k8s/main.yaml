@@ -1,0 +1,81 @@
+---
+- hosts: all
+  vars:
+    - {"zabbix_server" : "113.142.1.188,113.142.1.191"}
+  tasks:
+
+  - name: "disable swapoff"
+    shell: "swapoff -a"
+
+  - name: "delete fstab swap line"
+    shell: sed -i '/swap.img/d' /etc/fstab
+
+  - name: "import apt gpg"
+    shell: "sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+
+  - name: "import apt sourcelist"
+    shell: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+
+  - name: "install kube* containd nginx"
+    apt:
+     name: "{{ item }}"
+     update_cache: true
+    loop: 
+     - "nginx"
+     - "containerd"
+     - "kubelet=1.19.4-00"
+     - "kubectl=1.19.4-00"
+     - "kubeadm=1.19.4-00"
+
+  - name: "apt mark"
+    shell: "sudo apt-mark hold kubelet kubeadm kubectl"
+
+  - name: "cp nginx conf"
+    copy:
+     src: "./nginx.conf"
+     dest: "/etc/nginx"
+
+  - name: "restart nginx"
+    shell: "nginx -t && nginx -s reload"
+    
+
+  - name: "cp modules conf"
+    copy:
+     src: "./modules-k8s.conf"
+     dest: "/etc/modules-load.d/k8s.conf"
+
+  - name: "cp crictl conf"
+    copy:
+     src: "./crictl.yaml"
+     dest: "/etc/"
+
+  - name: "cp sysctl conf"
+    copy:
+     src: "./k8s.conf"
+     dest: "/etc/sysctl.d/k8s.conf"
+
+  - name: "cp 99-kubernetes-cri.conf"
+    copy:
+     src: "./99-kubernetes-cri.conf"
+     dest: "/etc/sysctl.d/"
+
+  - name: "sysctl"
+    shell: "sudo sysctl --system"
+
+  - name: "modprobe "
+    shell: modprobe br_netfilter
+  
+  - name: "containerd config"
+    shell: mkdir -p /etc/containerd && containerd config default  >/etc/containerd/config.toml
+    ignore_errors: true
+
+  - name: "replace containerd cgroup"
+    shell: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+
+  - name: "restart containerd "
+    shell: systemctl restart containerd
+
+ 
+
+

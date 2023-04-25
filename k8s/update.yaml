@@ -1,0 +1,22 @@
+---
+- hosts: all
+  vars:
+    - {"zabbix_server" : "113.142.1.188,113.142.1.191"}
+  tasks:
+
+
+  - name: "disable swapoff"
+    shell: "sudo apt remove -y kubeadm=1.23.0-00 kubectl=1.23.0-00 kubelet=1.23.0-00"
+
+
+  - name: "install kube* containd nginx"
+    apt:
+     name: "{{ item }}"
+     update_cache: true
+    loop: 
+     - "kubelet=1.19.4-00"
+     - "kubectl=1.19.4-00"
+     - "kubeadm=1.19.4-00"
+ 
+
+
