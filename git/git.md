@@ -40,13 +40,13 @@ docker打包
 ```
 docker build -t  镜像名 . #打包构建镜像
 
-docker tag SOURCE_IMAGE[:TAG] image.ankr.com/ankrnetwork/REPOSITORY[:TAG]
-docker tag ubuntu:20.04 image.ankr.com/ankrnetwork/ubuntu:20.04
+docker tag SOURCE_IMAGE[:TAG] image.ankr.com/cpicnetwork/REPOSITORY[:TAG]
+docker tag ubuntu:20.04 image.ankr.com/cpicnetwork/ubuntu:20.04
 
 docker pull HOSTNAME/PROJECT-ID/IMAGE:TAG
-docker pull image.ankr.com/ankrnetwork/ubuntu:20.04
+docker pull image.ankr.com/cpicnetwork/ubuntu:20.04
 
-docker push image.ankr.com/ankrnetwork/REPOSITORY[:TAG]
+docker push image.ankr.com/cpicnetwork/REPOSITORY[:TAG]
 ```
 ### 参考：[git command](https://m.geekku.com/spec/github/1422.html )  
 ---
