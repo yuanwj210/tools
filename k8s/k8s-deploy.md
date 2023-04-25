@@ -1,6 +1,6 @@
-new k8s
-1.准备工作（安装依赖，设置系统配置等）
-nginx.conf modules-k8s.conf crictl.yaml k8s.conf 99-kubernetes-cri.conf
+# New k8s
+**准备工作（安装依赖，设置系统配置等）**
+```
 cat >nginx.conf
 load_module /usr/lib/nginx/modules/ngx_stream_module.so;
 worker_processes 4;
@@ -23,7 +23,8 @@ stream {
         proxy_connect_timeout 3s;
     }
 }
-
+```
+```
 cat >modules-k8s.conf
 br_netfilter
 overlay
@@ -32,23 +33,26 @@ ip_vs_rr
 ip_vs_wrr
 ip_vs_sh
 nf_conntrack_ipv4
-
+```
+```
 cat >crictl.yaml
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 10
 debug: false
-
+```
+```
 cat >k8s.conf 
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
-
+```
+```
 cat >99-kubernetes-cri.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
-
-
+```
+```
 cat >main.yaml
 ---
 - hosts: all
@@ -128,7 +132,8 @@ cat >main.yaml
 
   - name: "restart containerd "
     shell: systemctl restart containerd 
-
+```
+```
 cat >update.yaml 
 ---
 - hosts: all
@@ -149,8 +154,9 @@ cat >update.yaml
      - "kubelet=1.19.4-00"
      - "kubectl=1.19.4-00"
      - "kubeadm=1.19.4-00"
-
-#三主三从，需单独部署etcd集群（用于初始化k8的yaml文件）
+```
+**三主三从，需单独部署etcd集群（用于初始化k8的yaml文件）**
+```
 cat >kubeadm.yml
 apiVersion: kubeadm.k8s.io/v1beta2
 bootstrapTokens:
@@ -305,8 +311,10 @@ streamingConnectionIdleTimeout: 0s
 syncFrequency: 0s
 volumeStatsAggPeriod: 0s
 ---
+```
 
-#一主两从，自动安装etcd
+**一主两从，自动安装etcd**
+```
 apiVersion: kubeadm.k8s.io/v1beta2
 bootstrapTokens:
 - groups:
@@ -449,40 +457,42 @@ streamingConnectionIdleTimeout: 0s
 syncFrequency: 0s
 volumeStatsAggPeriod: 0s
 ---
+```
 
-
-1.mester节点操作
-#stop systemd-resolved
+## master节点操作
+```
 systemctl stop systemd-resolved.service
 systemctl disable systemd-resolved.service
 echo nameserver 8.8.8.8 > /etc/resolv.conf
+```
 
-#初始化k8
-kubeadm init --config ./kubeadm.yml   --upload-certs  --skip-phases=addon/kube-proxy
+## 初始化k8
+`kubeadm init --config ./kubeadm.yml   --upload-certs  --skip-phases=addon/kube-proxy`
 
-#安装helm并使用helm安装cilium
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+## 安装helm并使用helm安装cilium
+```curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 bash ./get_helm.sh 
 helm repo add cilium https://helm.cilium.io/
 helm install cilium cilium/cilium --version 1.11.0   --namespace kube-system   --set kubeProxyReplacement=strict   --set k8sServiceHost=10.136.213.9   --set k8sServicePort=6443
-
-#install ingress 
+```
+## install ingress 
+```
 tar -xf ingress-nginx-4.1.4.tgz 
 cd ingress-nginx/
 vim values.yaml
 kubectl create ns ingress-nginx
 helm install ingress-nginx  ingress-nginx -f ./ingress-nginx/values.yaml -n ingress-nginx
- 
-#查看contained运行的容器
-crictl ps
-#重置k8s集群
-kubeadm reset
+ ```
+## 查看contained运行的容器
+`crictl ps`
+## 重置k8s集群
+`kubeadm reset`
 
 
-2.master添加副本节点
-systemctl stop systemd-resolved.service
+## 添加副本节点
+```systemctl stop systemd-resolved.service
 systemctl disable systemd-resolved.service
 echo nameserver 8.8.8.8 > /etc/resolv.conf
-kubeadm join 10.136.213.9:6443 --token abcdef.0123456789abcdef     --discovery-token-ca-cert-hash
-sha256:cbf6212260fe7c5b0c5483a3fc2b33451d3dc535c53a919c548a01ead14315ce
+kubeadm join 10.136.213.9:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash
+sha256:cbf6212260fe7c5b0c5483a3fc2b33451d3dc535c53a919c548a01ead14315ce```
 
