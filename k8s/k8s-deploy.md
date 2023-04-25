@@ -169,7 +169,7 @@ bootstrapTokens:
   - authentication
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: 172.31.0.222
+  advertiseAddress: 172.30.0.123
   bindPort: 5443
 nodeRegistration:
   criSocket: /run/containerd/containerd.sock
@@ -181,12 +181,12 @@ apiServer:
   timeoutForControlPlane: 4m0s
   certSANs:
     - 127.0.0.1
-    - 172.31.4.73
-    - 172.31.8.130
-    - 172.31.0.222
-    - 54.219.205.205
-    - 54.183.214.3
-    - 52.53.177.56
+    - 172.30.3.73
+    - 172.30.3.130
+    - 172.30.0.123
+    - 23.222.212.212
+    - 22.183.212.2
+    - 12.13.177.22
   extraArgs:
     feature-gates: TTLAfterFinished=true
     service-node-port-range: "20000-32379"
@@ -211,9 +211,9 @@ controllerManager:
 etcd:
   external:
     endpoints:
-    - "https://172.31.4.73:2379"
-    - "https://172.31.8.130:2379"
-    - "https://172.31.0.222:2379"
+    - "https://172.30.4.22:2379"
+    - "https://172.30.8.22:2379"
+    - "https://172.30.0.142:2379"
     caFile: "/etc/etcd/ssl/ca.pem"
     certFile: "/etc/etcd/ssl/etcd.pem"
     keyFile: "/etc/etcd/ssl/etcd-key.pem"
@@ -221,7 +221,7 @@ etcd:
 imageRepository: k8s.gcr.io
 kind: ClusterConfiguration
 kubernetesVersion: v1.19.4
-controlPlaneEndpoint: 172.31.0.222:6443
+controlPlaneEndpoint: 172.30.0.123:6443
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.97.0.0/12
@@ -326,7 +326,7 @@ bootstrapTokens:
   - authentication
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: 10.136.213.9
+  advertiseAddress: 10.136.123.9
   bindPort: 5443
 nodeRegistration:
   criSocket: /run/containerd/containerd.sock
@@ -338,10 +338,10 @@ apiServer:
   timeoutForControlPlane: 4m0s
   certSANs:
     - 127.0.0.1
-    - 10.136.213.9
-    - 165.22.186.229
-    - 138.197.16.23
-    - 138.197.31.24
+    - 10.136.123.9
+    - 123.22.123.229
+    - 123.197.16.23
+    - 123.197.31.24
   extraArgs:
     feature-gates: TTLAfterFinished=true
     service-node-port-range: "20000-32379"
@@ -367,7 +367,7 @@ controllerManager:
 imageRepository: registry.k8s.io
 kind: ClusterConfiguration
 kubernetesVersion: v1.19.4
-controlPlaneEndpoint: 10.136.213.9:6443
+controlPlaneEndpoint: 10.123.123.9:6443
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.97.0.0/12
@@ -493,6 +493,6 @@ helm install ingress-nginx  ingress-nginx -f ./ingress-nginx/values.yaml -n ingr
 ```systemctl stop systemd-resolved.service
 systemctl disable systemd-resolved.service
 echo nameserver 8.8.8.8 > /etc/resolv.conf
-kubeadm join 10.136.213.9:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash
+kubeadm join 10.123.123.9:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash
 sha256:cbf6212260fe7c5b0c5483a3fc2b33451d3dc535c53a919c548a01ead14315ce```
 
