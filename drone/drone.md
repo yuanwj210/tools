@@ -1,4 +1,5 @@
-drone deploy
+### drone deploy
+```
 docker run   --volume=/var/lib/drone_ape:/data   --env=DRONE_GITHUB_CLIENT_ID=bdbd0df3e9b363edf489   --env=DRONE_GITHUB_CLIENT_SECRET=778b6206faf05c95037b7974b3
 9699097e4ae6d6   --env=DRONE_RPC_SECRET=83bb3d75f54099e293e4952539f86654   --env=DRONE_SERVER_HOST=drone.metaapesgame.com   --env=DRONE_SERVER_PROTO=https   --publish=
 8080:80   --restart=always   --detach=true   --name=drone_ape   drone/drone:2
@@ -6,6 +7,7 @@ docker run   --volume=/var/lib/drone_ape:/data   --env=DRONE_GITHUB_CLIENT_ID=bd
 docker run   --volume=/var/lib/drone:/data   --env=DRONE_GITHUB_CLIENT_ID=4ac423d15f6a50c71421   --env=DRONE_GITHUB_CLIENT_SECRET=7e636adcd41d34b36765fe38b0848c
 9fe8c7fbb5   --env=DRONE_RPC_SECRET=ae146abd40107879e580fff1dabb9ef5   --env=DRONE_SERVER_HOST=drone.ankr.com   --env=DRONE_SERVER_PROTO=https   --publish=80:80   --pu
 blish=443:443   --restart=always   --detach=true   --name=drone   drone/drone:2
+```
 
 **安装docker环境**
 ```
