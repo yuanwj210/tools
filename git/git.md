@@ -1,4 +1,5 @@
-### git常用命令
+* git常用命令
+
 克隆项目
 `git clone git@github.com:FBing/design-patterns.git` <br>
 查看分支
@@ -17,7 +18,8 @@
 `git branch -d [branch name]` <br>
 删除github远程分支
 `git push origin :[branch name]` <br>
-github合并分支
+
+* github合并分支
 ```flow
 git checkout (master) 
 git pull
@@ -34,8 +36,6 @@ git push origin master
 
 `git pull origin master --allow-unrelated-histories`
 
-[git command](https://m.geekku.com/spec/github/1422.html )  
- 
 docker打包
 ```
 docker build -t  镜像名 . #打包构建镜像
@@ -48,6 +48,7 @@ docker pull image.ankr.com/ankrnetwork/ubuntu:20.04
 
 docker push image.ankr.com/ankrnetwork/REPOSITORY[:TAG]
 ```
+### 参考：[git command](https://m.geekku.com/spec/github/1422.html )  
 ---
 
 
